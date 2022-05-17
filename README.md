@@ -23,7 +23,7 @@ Example of one of the visualizations available on this repository:
 
 <br>
 
-:exclamation: To know how to set up and use this repository artifacts you can go directly to the this section [How to use the contents of this repository](How-to-use-the-contents-of-this-repository)
+:exclamation: To know how to set up and use this repository artifacts you can go directly to the this section [How to use the contents of this repository](#how-to-use-the-contents-of-this-repository)
 
 :exclamation: **Want to support to implement or extend this assets?**
 Contact OutSystems Professional Services. You can know more about us at:
@@ -39,7 +39,7 @@ The major goal of these accelerators is to provide OutSystems customers with an 
     - Selection of visible information.
 - **Do more advanced monitoring**, compared to what can be done using the built-in tools of the OutSystems platform. Things like:
     - Build alerts for an OutSystems environment or OutSystems Factory.
-    - Leverage Elastic analytic capabilities to have deeper insights on performance and behaviour of applications, and the platform itself.
+    - Leverage Elastic analytic capabilities to have deeper insights on performance and behavior of applications, and the platform itself.
 - **Observe OutSystems applications performance and errors through time**.
     - Quickly pinpoint performance bottlenecks, areas to improve, etc.
     - Figure out what is affecting performance:
