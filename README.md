@@ -97,7 +97,8 @@ If you are good with setting up the Elastic stack, and you want to know how to u
 If you want to explore more deeply what you can take out of the OutSystems monitoring data, you can refer to:
 - [How to access OutSystems monitoring data to begin with](docs/Access-Monitoring-Data.md).
 - [Understand OutSystems monitoring data](docs/Monitoring-Data.md).
-- [How to build baseline metrics with Outsystems monitoring data][https://docs.google.com/spreadsheets/d/1tWQMsnxKUEGjk7-UrdKUu4X5U1koqo_M__wiigtt7g4/edit?usp=sharing).
+- [Baseline metrics that OutSystems recommends to use](https://docs.google.com/spreadsheets/d/1tWQMsnxKUEGjk7-UrdKUu4X5U1koqo_M__wiigtt7g4/edit?usp=sharing)
+  - Some of these metrics are built on top of OutSystems monitoring data (logs, request events, etc)
 
 <br>
 
