@@ -1,0 +1,101 @@
+{
+  "index_patterns": "os-mon-log-request-breakdown*",
+  "version": 1,
+  "settings": {
+    "index.refresh_interval": "15s",
+    "index.number_of_shards": "1",
+    "index.lifecycle.name": "os-mon-log-ilm-policy",
+    "index.lifecycle.rollover_alias": "os-mon-log-request-breakdown"
+  },
+  "mappings": {
+    "properties": {
+      "application": {
+        "properties": {
+          "name": {
+            "type": "keyword"
+          },
+          "module": {
+            "type": "keyword"
+          }
+        }
+      },
+      "request": {
+        "properties": {
+          "key": {
+            "type": "keyword"
+          },
+          "total_time": {
+            "type": "double"
+          },
+          "network": {
+            "properties": {
+              "time": {
+                "type": "double"
+              }
+            }
+          },
+          "client": {
+            "properties": {
+              "time": {
+                "type": "double"
+              },
+              "load_time": {
+                "type": "double"
+              }
+            }
+          },
+          "server": {
+            "properties": {
+              "time": {
+                "type": "double"
+              },
+              "error_count": {
+                "type": "double"
+              },
+              "query": {
+                "properties": {
+                  "time": {
+                    "type": "double"
+                  },
+                  "executions": {
+                    "type": "double"
+                  }
+                }
+              },
+              "integration": {
+                "properties": {
+                  "time": {
+                    "type": "double"
+                  },
+                  "executions": {
+                    "type": "double"
+                  }
+                }
+              },
+              "extension": {
+                "properties": {
+                  "time": {
+                    "type": "double"
+                  },
+                  "executions": {
+                    "type": "double"
+                  }
+                }
+              },
+              "session": {
+                "properties": {
+                  "acquisition_time": {
+                    "type": "double"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "@timestamp": {
+        "type": "date"
+      }
+    }
+  }
+}
