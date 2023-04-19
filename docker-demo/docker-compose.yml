@@ -43,6 +43,9 @@ services:
     image: docker.elastic.co/kibana/kibana:7.17.9
     volumes:
       - kbdata:/usr/share/kibana/data
+      ##Enable the following field if you intend to have authentication in your environment,
+      ## and then follow the steps detailed here: https://www.elastic.co/guide/en/elasticsearch/reference/7.17/security-minimal-setup.html
+      #- ./kibana/config/:/usr/share/kibana/config
     environment:
       discovery.type: "single-node"
       ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
