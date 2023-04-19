@@ -12,7 +12,10 @@ services:
     environment:
       ES_JAVA_OPTS: "-Xmx512m -Xms512m"
       discovery.type: "single-node"
+      ##Check Kibana notes on authentication
       xpack.security.enabled: false
+      #xpack.security.enabled: true
+      #xpack.security.authc.api_key.enabled: true
     ulimits:
       memlock:
         soft: -1
@@ -70,8 +73,8 @@ services:
      - ./logstash/config/logstash.env
     volumes:
       - ./logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml:ro
-      - ./logstash/patterns:/usr/share/patterns:ro
-      - ./logstash/run:/usr/share/run:ro
+      - ./logstash/patterns:/usr/share/logstash/patterns:ro
+      - ./logstash/run:/usr/share/logstash/run:ro
 ## CHOOSE ONE OF THE FOLLOWING, EITHER DB ACCESS OR MONITOR PROBE      
       - ./logstash/pipeline/monitor-probe:/usr/share/logstash/pipeline:ro
 #      - ./logstash/pipeline/database:/usr/share/logstash/pipeline:ro      
@@ -85,7 +88,7 @@ services:
      - elasticsearch
     links:
       - elasticsearch
-    command: bash -c "/usr/share/logstash/bin/logstash-plugin update && /usr/share/logstash/bin/logstash-plugin install logstash-filter-range && /usr/local/bin/docker-entrypoint"
+    command: bash -c "/usr/share/logstash/bin/logstash-plugin install logstash-filter-range && /usr/local/bin/docker-entrypoint"
 
 networks:
   elasticnetwork:
