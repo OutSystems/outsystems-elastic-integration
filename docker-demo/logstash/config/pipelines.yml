@@ -1,0 +1,27 @@
+# This file is where you define your pipelines. You can define multiple.
+# For more information on multiple pipelines, see the documentation:
+#   https://www.elastic.co/guide/en/logstash/current/multiple-pipelines.html
+
+- pipeline.id: devops-dev-error
+  path.config: "/usr/share/logstash/pipeline/error.conf"
+
+- pipeline.id: devops-dev-extension
+  path.config: "/usr/share/logstash/pipeline/extension.conf"
+
+- pipeline.id: devops-dev-integration
+  path.config: "/usr/share/logstash/pipeline/integration.conf"
+
+- pipeline.id: devops-dev-mobile-request
+  path.config: "/usr/share/logstash/pipeline/mobile-request.conf"
+
+- pipeline.id: devops-dev-timer
+  path.config: "/usr/share/logstash/pipeline/timer.conf"
+
+- pipeline.id: devops-dev-web-request
+  path.config: "/usr/share/logstash/pipeline/web-request.conf"
+
+- pipeline.id: devops-dev-general
+  path.config: "/usr/share/logstash/pipeline/general.conf"
+
+- pipeline.id: devops-dev-request-events
+  path.config: "/usr/share/logstash/pipeline/request-event.conf"

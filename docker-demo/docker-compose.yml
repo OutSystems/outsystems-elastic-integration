@@ -1,0 +1,101 @@
+version: '1.0'
+
+services:
+
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    environment:
+      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
+      discovery.type: "single-node"
+      ##Check Kibana notes on authentication
+      xpack.security.enabled: false
+      #xpack.security.enabled: true
+      #xpack.security.authc.api_key.enabled: true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test: ["CMD", "curl","-s" ,"-f", "http://localhost:9200/_cat/health"]
+    networks:
+      - elasticnetwork
+
+  elasticsearch-setup:
+    container_name: elasticsearch-setup
+    image: alpine:latest
+    volumes:
+      - ./elasticsearch/config/setup.sh:/setup.sh
+      - ./elasticsearch/config/ilm.json:/ilm.json
+      - ./elasticsearch/config/index_template.json:/index_template.json
+      - ./elasticsearch/config/transform.json:/transform.json
+      - ./elasticsearch/config/index_bootstrap.json:/index_bootstrap.json
+    depends_on:
+      - elasticsearch
+    networks:
+      - elasticnetwork
+    command: sh ./setup.sh
+
+
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:7.17.9
+    volumes:
+      - kbdata:/usr/share/kibana/data
+      ##Enable the following field if you intend to have authentication in your environment,
+      ## and then follow the steps detailed here: https://www.elastic.co/guide/en/elasticsearch/reference/7.17/security-minimal-setup.html
+      #- ./kibana/config/:/usr/share/kibana/config
+    environment:
+      discovery.type: "single-node"
+      ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
+    ports:
+      - "5601:5601"
+    expose:
+      - "5601"
+    networks:
+      - elasticnetwork
+    depends_on:
+      - elasticsearch
+    links:
+      - elasticsearch
+    healthcheck:
+      test: ["CMD", "curl", "-s", "-f", "http://localhost:5601/"]
+      retries: 6
+
+  logstash:
+    container_name: logstash
+    image: docker.elastic.co/logstash/logstash:7.17.9
+    env_file:
+     - ./logstash/config/logstash.env
+    volumes:
+      - ./logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml:ro
+      - ./logstash/patterns:/usr/share/logstash/patterns:ro
+      - ./logstash/run:/usr/share/logstash/run:ro
+## CHOOSE ONE OF THE FOLLOWING, EITHER DB ACCESS OR MONITOR PROBE      
+      - ./logstash/pipeline/monitor-probe:/usr/share/logstash/pipeline:ro
+#      - ./logstash/pipeline/database:/usr/share/logstash/pipeline:ro      
+    ports:
+      - "5000:5000"
+    environment:
+      LS_JAVA_OPTS: "-Xmx512m -Xms512m"
+    networks:
+      - elasticnetwork
+    depends_on:
+     - elasticsearch
+    links:
+      - elasticsearch
+    command: bash -c "/usr/share/logstash/bin/logstash-plugin install logstash-filter-range && /usr/local/bin/docker-entrypoint"
+
+networks:
+  elasticnetwork:
+    driver: bridge
+
+volumes:
+  esdata:
+    driver: local
+  kbdata:
+    driver: local

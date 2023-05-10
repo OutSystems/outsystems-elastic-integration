@@ -1,0 +1,10 @@
+#
+# ** THIS IS AN AUTO-GENERATED FILE **
+#
+
+# Default Kibana configuration for docker target
+server.host: "0.0.0.0"
+server.shutdownTimeout: "5s"
+elasticsearch.hosts: [ "http://elasticsearch:9200" ]
+#This field is only if you intend to enable authentication in your environment. Check details on the docker compose file, under kibana section
+#elasticsearch.username: "kibana_system"

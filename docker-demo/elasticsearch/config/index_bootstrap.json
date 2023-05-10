@@ -1,0 +1,7 @@
+{
+  "aliases": {
+    "os-mon-log-request-breakdown": {
+      "is_write_index": true
+    }
+  }
+}
