@@ -70,7 +70,7 @@ services:
     container_name: logstash
     image: docker.elastic.co/logstash/logstash:7.17.9
     env_file:
-     - ./logstash/config/logstash.env
+      - ./logstash/config/logstash.env
     volumes:
       - ./logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml:ro
       - ./logstash/patterns:/usr/share/logstash/patterns:ro
@@ -85,7 +85,7 @@ services:
     networks:
       - elasticnetwork
     depends_on:
-     - elasticsearch
+      - elasticsearch
     links:
       - elasticsearch
     command: bash -c "/usr/share/logstash/bin/logstash-plugin install logstash-filter-range && /usr/local/bin/docker-entrypoint"
