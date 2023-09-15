@@ -10,7 +10,7 @@
           {"bool": {
             "must": [
               {"match": {
-                "request_event.name.keyword": "WebScreenClientExecuted"
+                "request_event.name": "WebScreenClientExecuted"
               }},
               {"range": {
                 "request.total_duration": {
@@ -22,7 +22,7 @@
           {"bool": {
             "must": [
               {"match": {
-                "request_event.name.keyword": "WebScreenServerExecuted"
+                "request_event.name": "WebScreenServerExecuted"
               }},
               {"range": {
                 "request.server_duration": {
@@ -55,17 +55,17 @@
     "group_by": {
       "application.name": {
         "terms": {
-          "field": "application.name.keyword"
+          "field": "application.name"
         }
       },
       "application.module": {
         "terms": {
-          "field": "application.module_name.keyword"
+          "field": "application.module_name"
         }
       },
       "request.key": {
         "terms": {
-          "field": "request.key.keyword"
+          "field": "request.key"
         }
       }
     },
