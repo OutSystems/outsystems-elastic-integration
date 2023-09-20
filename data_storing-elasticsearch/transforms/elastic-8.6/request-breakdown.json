@@ -1,0 +1,154 @@
+{
+  "id": "request-breakdown",
+  "source": {
+    "index": [
+      "os-mon-log-request-event-*"
+    ],
+    "query": {
+      "bool" : {
+        "should": [
+          {"bool": {
+            "must": [
+              {"match": {
+                "request_event.name": "WebScreenClientExecuted"
+              }},
+              {"range": {
+                "request.total_duration": {
+                  "gt": 0
+                }
+              }}
+            ]
+          }},
+          {"bool": {
+            "must": [
+              {"match": {
+                "request_event.name": "WebScreenServerExecuted"
+              }},
+              {"range": {
+                "request.server_duration": {
+                  "gt": 0
+                }
+              }}
+            ]
+          }}
+        ],
+        "filter": [
+          {"range": {
+            "@timestamp": {
+              "gte": "2020-12-01T00:00:00"
+            }
+          }}
+        ]
+      }
+    }
+  },
+  "dest": {
+    "index": "os-mon-log-request-breakdown"
+  },
+  "sync": {
+    "time": {
+      "field": "@timestamp",
+      "delay": "5m"
+    }
+  },
+  "pivot": {
+    "group_by": {
+      "application.name": {
+        "terms": {
+          "field": "application.name"
+        }
+      },
+      "application.module": {
+        "terms": {
+          "field": "application.module_name"
+        }
+      },
+      "request.key": {
+        "terms": {
+          "field": "request.key"
+        }
+      }
+    },
+    "aggregations": {
+      "request.client.time": {
+        "sum": {
+          "field": "request.total_duration"
+        }
+      },
+      "request.client.load_time": {
+        "sum": {
+          "field": "request.load_time"
+        }
+      },
+      "request.server.time": {
+        "sum": {
+          "field": "request.server_duration"
+        }
+      },
+      "request.server.query.time": {
+        "sum": {
+          "field": "query.total_time"
+        }
+      },
+      "request.server.query.executions": {
+        "sum": {
+          "field": "query.total_executions"
+        }
+      },
+      "request.server.integration.time": {
+        "sum": {
+          "field": "integration.total_time"
+        }
+      },
+      "request.server.integration.executions": {
+        "sum": {
+          "field": "integration.total_executions"
+        }
+      },
+      "request.server.extension.time": {
+        "sum": {
+          "field": "extension.total_time"
+        }
+      },
+      "request.server.extension.executions": {
+        "sum": {
+          "field": "extension.total_executions"
+        }
+      },
+      "request.server.error_count": {
+        "sum": {
+          "field": "request.error_count"
+        }
+      },
+      "request.server.session.acquisition_time": {
+        "sum": {
+          "field": "session.acquisition_time"
+        }
+      },
+      "@timestamp": {
+        "min": {
+          "field": "@timestamp"
+        }
+      },
+      "request.network.time": {
+        "bucket_script": {
+          "buckets_path": {
+            "c": "request.total_time.value",
+            "l": "request.client.load_time.value",
+            "s": "request.server.time.value"
+          },
+          "script": "params.c == 0 ? 0 : params.c - params.l - params.s"
+        }
+      },
+      "request.total_time": {
+        "bucket_script": {
+          "buckets_path": {
+            "c": "request.client.time.value",
+            "s": "request.server.time.value"
+          },
+          "script": "params.c == 0 ? params.s : params.c"
+        }
+      }
+    }
+  }
+}
