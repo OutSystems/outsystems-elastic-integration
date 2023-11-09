@@ -22,6 +22,9 @@ services:
         hard: -1
     healthcheck:
       test: ["CMD", "curl","-s" ,"-f", "http://localhost:9200/_cat/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
     networks:
       - elasticnetwork
 
@@ -35,7 +38,8 @@ services:
       - ./elasticsearch/config/transform.json:/transform.json
       - ./elasticsearch/config/index_bootstrap.json:/index_bootstrap.json
     depends_on:
-      - elasticsearch
+      elasticsearch:
+        condition: service_healthy
     networks:
       - elasticnetwork
     command: sh ./setup.sh
