@@ -4,7 +4,8 @@ services:
 
   elasticsearch:
     container_name: elasticsearch
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
+    # image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.2.1
     volumes:
       - esdata:/usr/share/elasticsearch/data
     ports:
@@ -43,7 +44,8 @@ services:
 
   kibana:
     container_name: kibana
-    image: docker.elastic.co/kibana/kibana:7.17.9
+    # image: docker.elastic.co/kibana/kibana:7.17.9
+    image: docker.elastic.co/kibana/kibana:8.2.1
     volumes:
       - kbdata:/usr/share/kibana/data
       ##Enable the following field if you intend to have authentication in your environment,
@@ -68,20 +70,24 @@ services:
 
   logstash:
     container_name: logstash
-    image: docker.elastic.co/logstash/logstash:7.17.9
+    # image: docker.elastic.co/logstash/logstash:7.17.9
+    image: docker.elastic.co/logstash/logstash:8.2.1
     env_file:
      - ./logstash/config/logstash.env
     volumes:
       - ./logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml:ro
       - ./logstash/patterns:/usr/share/logstash/patterns:ro
       - ./logstash/run:/usr/share/logstash/run:ro
-## CHOOSE ONE OF THE FOLLOWING, EITHER DB ACCESS OR MONITOR PROBE      
-      - ./logstash/pipeline/monitor-probe:/usr/share/logstash/pipeline:ro
-#      - ./logstash/pipeline/database:/usr/share/logstash/pipeline:ro      
+      - ./logstash/local-logs:/usr/share/logstash/logs:ro
+## CHOOSE ONE OF THE FOLLOWING, EITHER MONITOR PROBE, DB ACCESS, or local files
+#      - ./logstash/pipeline/monitor-probe:/usr/share/logstash/pipeline:ro
+#      - ./logstash/pipeline/database:/usr/share/logstash/pipeline:ro
+      - ./logstash/pipeline/file-input:/usr/share/logstash/pipeline:ro
     ports:
       - "5000:5000"
     environment:
       LS_JAVA_OPTS: "-Xmx512m -Xms512m"
+      # MONITORING_ELASTICSEARCH_HOSTS: "loadtestresultsanalysis.kb.northeurope.azure.elastic-cloud.com:9200"
     networks:
       - elasticnetwork
     depends_on:
