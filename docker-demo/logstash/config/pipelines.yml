@@ -23,8 +23,8 @@
 - pipeline.id: devops-dev-general
   path.config: "/usr/share/logstash/pipeline/general.conf"
 
-# - pipeline.id: devops-dev-request-events
-#   path.config: "/usr/share/logstash/pipeline/request-event.conf"
+- pipeline.id: devops-dev-request-events
+  path.config: "/usr/share/logstash/pipeline/request-event.conf"
 
-# - pipeline.id: devops-dev-performance-counters
-#   path.config: "/usr/share/logstash/pipeline/perf-counter.conf"
+- pipeline.id: devops-dev-performance-counters
+  path.config: "/usr/share/logstash/pipeline/perf-counter.conf"
