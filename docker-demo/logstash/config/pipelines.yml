@@ -28,3 +28,6 @@
 
 - pipeline.id: devops-dev-performance-counters
   path.config: "/usr/share/logstash/pipeline/perf-counter.conf"
+
+- pipeline.id: devops-dev-service-actions
+  path.config: "/usr/share/logstash/pipeline/service-actions.conf"
