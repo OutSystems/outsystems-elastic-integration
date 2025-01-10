@@ -75,9 +75,11 @@ services:
       - ./logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml:ro
       - ./logstash/patterns:/usr/share/logstash/patterns:ro
       - ./logstash/run:/usr/share/logstash/run:ro
-## CHOOSE ONE OF THE FOLLOWING, EITHER DB ACCESS OR MONITOR PROBE      
+      - ./logstash/local-logs:/usr/share/logstash/logs:ro
+## CHOOSE ONE OF THE FOLLOWING, EITHER MONITOR PROBE, DB ACCESS, or local files
       - ./logstash/pipeline/monitor-probe:/usr/share/logstash/pipeline:ro
-#      - ./logstash/pipeline/database:/usr/share/logstash/pipeline:ro      
+      # - ./logstash/pipeline/database:/usr/share/logstash/pipeline:ro
+      # - ./logstash/pipeline/file-input:/usr/share/logstash/pipeline:ro
     ports:
       - "5000:5000"
     environment:
